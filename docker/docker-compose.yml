@@ -1,0 +1,28 @@
+version: '2.4'  # version 2.4 allows 'runtime' and 'gpu' support in standalone compose
+services:
+  deepstream-app:
+    build:
+      context: .. 
+      dockerfile: docker/Dockerfile
+    image: capstone:latest
+    container_name: deepstream_dev
+    network_mode: "host"
+    privileged: true # Helps with hardware access (cameras/GPUs) on some setups
+    
+    stdin_open: true
+    tty: true
+
+    # This is the magic key for legacy Compose
+    runtime: nvidia 
+
+    environment:
+      - DISPLAY=${DISPLAY}
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ..:/workspace
+
+    devices:
+      - /dev/video0:/dev/video0

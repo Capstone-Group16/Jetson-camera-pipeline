@@ -1,0 +1,6 @@
+# Ignore the heavy folders from the build context
+../tao_ws
+../.git
+../*.mp4
+../*.engine
+../models

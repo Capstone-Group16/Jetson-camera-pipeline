@@ -3,6 +3,24 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+# TensorRT Engine Files (Exclude these)
+# These are hardware-specific binaries and should be generated locally on each device.
+*.engine
+*.plan
+*.trt
+
+# DeepStream / Calibration Cache
+*.bin
+*.cache
+
+# Python Bytecode
+__pycache__/
+*.py[cod]
+
+# System / IDE files
+.DS_Store
+.vscode/
+
 # C extensions
 *.so
 
