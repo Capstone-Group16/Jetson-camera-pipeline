@@ -1,4 +1,3 @@
-version: '2.4'  # version 2.4 allows 'runtime' and 'gpu' support in standalone compose
 services:
   deepstream-app:
     build:
