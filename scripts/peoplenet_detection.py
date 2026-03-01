@@ -70,8 +70,10 @@ TCP_VIDEO_PORT = 5001
 # Max JPEG frame size sanity check (2 MB)
 TCP_MAX_FRAME_BYTES = 2 * 1024 * 1024
 
-# Expanded global dictionary to track {object_id: first_seen_time}
+# Global dictionary to track {object_id: first_seen_time}
 object_timers = {}
+OBJECT_DETECTION_DEBUG_THRESHOLD_S = 1
+OBJECT_DETECTION_LOITERING_THRESHOLD_S = 15
 
 
 # =============================================================================
@@ -473,10 +475,15 @@ def pgie_src_pad_buffer_probe(pad, info, u_data):
                     duration = current_wall_time - object_timers[obj_id]
                     
                     # Alarm logic for detections > 1 second
-                    if duration >= 1.0 and not silent:
+                    if duration >= OBJECT_DETECTION_DEBUG_THRESHOLD_S and not silent:
                         rect = obj_meta.rect_params
                         # Dynamic print statement for "Found face #x" or "Found person #x"
-                        print(f"[ALARM] Found {label} #{obj_id} | Duration: {duration:.2f}s | "
+                        print(f"[DEBUG] Found {label} #{obj_id} | Duration: {duration:.2f}s | "
+                              f"BBox: ({int(rect.left)}, {int(rect.top)}, {int(rect.width)}, {int(rect.height)})")
+                    elif duration >= OBJECT_DETECTION_LOITERING_THRESHOLD_S and not silent:
+                        rect = obj_meta.rect_params
+                        # Dynamic print statement for "Found face #x" or "Found person #x"
+                        print(f"[ALARM] Detected {label} #{obj_id} | Duration: {duration:.2f}s | "
                               f"BBox: ({int(rect.left)}, {int(rect.top)}, {int(rect.width)}, {int(rect.height)})")
 
             try:
